@@ -14,4 +14,9 @@ class Sender(
         template.convertAndSend(queue.name, message)
         println(" [x] Sent '$message'")
     }
+
+    fun command(name: String){
+        template.convertAndSend(queue.name, name)
+        println(" [x] Sent '$name'")
+    }
 }
