@@ -1,27 +1,17 @@
 package com.example.learn_kotlin.mq
 
-import com.rabbitmq.client.ConnectionFactory
+import org.springframework.amqp.core.Queue
 import org.springframework.stereotype.Component
-
+import org.springframework.amqp.rabbit.core.RabbitTemplate
 
 @Component
-class Sender{
-    companion object {
-        const val QUEUE_NAME = "hello"
-    }
-
+class Sender(
+    val template: RabbitTemplate,
+    val queue: Queue
+){
     fun hello(){
-        val factory = ConnectionFactory()
-        factory.host = "localhost"
-        val connection = factory.newConnection()
-        val channel = connection.createChannel()
-
-        channel.queueDeclare(Sender.QUEUE_NAME, false, false, false, null)
-        val message = "Hello World!"
-        channel.basicPublish("", Sender.QUEUE_NAME, null, message.toByteArray(charset("UTF-8")))
+        var message = "Hello World!"
+        template.convertAndSend(queue.name, message)
         println(" [x] Sent '$message'")
-
-        channel.close()
-        connection.close()
     }
 }
