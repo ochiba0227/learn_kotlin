@@ -14,7 +14,6 @@ class HelloController {
 
     @GetMapping("/hello")
     fun hello(): String {
-//        sender.hello()
         return "hello"
     }
 
